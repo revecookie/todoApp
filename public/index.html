@@ -1,0 +1,93 @@
+<!doctype html>
+
+<!-- ASSIGN ANGULAR MODULE -->
+<html ng-app="toDo">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1"><!-- Optimize mobile viewport -->
+
+		<title>My Todo List</title>
+
+		<!-- SCROLLS -->
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"><!-- load bootstrap -->
+		<link rel="stylesheet" href="lib/font-awesome-4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="css/main.css">
+		<style>
+			html {overflow-y: scroll;}
+			body {padding-top: 50px;}
+			#todo-list {margin-top: 30px;}
+		</style>
+
+		<!-- SPELLS -->
+		 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><!-- load jquery -->
+    	 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script><!-- load angular -->
+		 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/0.10.0/lodash.min.js"></script>
+		 <script src="core.js"></script>
+	</head>
+
+	<body ng-controller="todoController">
+		<div class="container">
+			<!-- HEADER AND TODO COUNT -->
+			<div class="page-header text-center">
+				<h1>Today's Todo List  <span class="badge">{{ remainingTodos() }}</span> </h1>
+			</div>
+			<!-- TODO LIST -->
+			<div id="todo-list" class="row">
+				<div class="col-sm-16 col-sm-offset-2">
+
+					<!-- LOOP OVER THE TODOS IN $scope.todos -->
+					<div ng-repeat="todo in todos | orderBy: ['done', 'date']">
+						<label>
+
+
+							<div ng-hide="todo.done">
+								<h3 class="show-ghost">
+									<i class="fa fa-check-circle" aria-hidden="true" ng-click="toggleTodoStatus(todo)"></i>
+									<i class="fa fa-times-circle text-danger ghost" aria-hidden="true" ng-click="deleteTodo(todo._id)"></i>
+									{{ todo.text }}
+									<small class="ghost">Added: <b>{{todo.dateAdded | date}}</b></small>
+									<small class="ghost"> Last Modified: <b>{{todo.dateAdded | date}}</b></small>
+								</h3>
+
+							</div>
+
+
+							<div ng-show="todo.done">
+								<h3 class="show-ghost">
+									<i class="fa fa-check-circle text-success" aria-hidden="true" ng-click="toggleTodoStatus(todo)"></i>
+									<i class="fa fa-times-circle text-danger ghost" aria-hidden="true" ng-click="deleteTodo(todo._id)"></i>
+									<strike>{{ todo.text }}</strike>
+									<small class="ghost">Added: <b>{{todo.dateAdded | date}}</b></small>
+									<small class="ghost"> Last Modified: <b>{{todo.dateAdded | date}}</b></small>
+								</h3>
+							</div>
+
+
+						</label>
+					</div>
+
+				</div>
+
+			</div>
+
+			<!-- FORM TO CREATE TODOS -->
+			<div id="todo-form" class="row">
+				<div class="col-sm-8 col-sm-offset-2 text-center">
+					<form>
+						<div class="form-group">
+							 <!-- BIND THIS VALUE TO formData.text IN ANGULAR -->
+                        <input  type="text"
+                        		class="form-control input-lg text-center"
+                        		placeholder="Write your todo and press enter"
+                        		ng-model="formData.text">
+						</div>
+
+						<!-- createToDo() WILL CREATE NEW TODOS -->
+                    	<button type="submit" class="btn btn-primary btn-lg ghost" ng-click="createTodo()">Add</button>
+                
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
